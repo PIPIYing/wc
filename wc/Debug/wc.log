@@ -1,2 +1,5 @@
 ﻿  wc.cpp
+E:\vs project\wc\wc\wc.cpp(129,17): warning C4101: “count2”: 未引用的局部变量
+E:\vs project\wc\wc\wc.cpp(129,25): warning C4101: “count3”: 未引用的局部变量
+E:\vs project\wc\wc\wc.cpp(129,9): warning C4101: “count1”: 未引用的局部变量
   wc.vcxproj -> E:\vs project\wc\Debug\wc.exe

@@ -1,5 +1,6 @@
 ﻿#include <stdio.h>
-#include<string.h>
+#include <string.h>
+#include <io.h>
 #define N 100
 
 //统计字符数
@@ -8,7 +9,8 @@ int countChar(char file[N])
     FILE* fp = NULL;
     errno_t err;
     int c;
-    int n = 0;  //计数器
+    //计数器
+    int n = 0;  
     //int c[N];
     //int i = 0;
 
@@ -61,7 +63,8 @@ int countWord(char file[N]) {
     FILE* fp = NULL;
     errno_t err;
     int c;
-    int n = 0;  //计数器
+    //计数器
+    int n = 0;  
 
     err = fopen_s(&fp, file, "r");
     if (fp == NULL)
@@ -86,7 +89,8 @@ int countLine(char file[N]) {
     FILE* fp = NULL;
     errno_t err;
     char b[N];
-    int n = 0;  //计数器
+    //计数器
+    int n = 0;  
 
     err = fopen_s(&fp, "file.txt", "r");
     if (fp == NULL)
@@ -103,10 +107,29 @@ int countLine(char file[N]) {
     return n;
 }
 
+//递归查找符合条件的文件
+int searchFile() {
+    //文件句柄
+    long Handle;
+    //文件存储信息结构体
+    struct _finddata_t fileInfo;
+
+    if ((Handle = _findfirst("E:\\vs project\\wc\\wc\\*.c", &fileInfo)) == -1L)
+        printf("没有找到这种类型的文件。\n");
+    else {
+        printf("文件名：%s\n", fileInfo.name);
+        while (_findnext(Handle, &fileInfo) == 0)
+            printf("文件名：%s\n", fileInfo.name);
+        _findclose(Handle);
+    }
+    return 0;
+};
+
 int main(int argc, char* argv[]) {
     int count1, count2, count3;
 
-    if (strcmp(argv[1], "-c") == 0)
+    //-1返回文件不存在的结果
+    /*if (strcmp(argv[1], "-c") == 0)
     {
         count1 = countChar(argv[2]);
         if (count1 != -1)  printf("该文件中有%d个字符。\n", count1);
@@ -120,7 +143,9 @@ int main(int argc, char* argv[]) {
     {
         count3 = countLine(argv[2]);
         if (count3 != -1)  printf("该文件中有%d行。\n", count3);
-    }
+    }*/
+
+    searchFile();
 
     return 0;
 }
