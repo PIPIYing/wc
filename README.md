@@ -1,0 +1,2 @@
+# wc
+ software personal project
