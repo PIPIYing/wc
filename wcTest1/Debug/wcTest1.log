@@ -1,0 +1,5 @@
+﻿  pch.cpp
+  wcTest1.cpp
+    正在创建库 E:\vs project\wc\Debug\wcTest1.lib 和对象 E:\vs project\wc\Debug\wcTest1.exp
+wcTest1.obj : error LNK2019: 无法解析的外部符号 "int __cdecl countChar(char * const,char * const)" (?countChar@@YAHQAD0@Z)，该符号在函数 "public: void __thiscall wcTest1::wcTest1::TestMethod1(void)" (?TestMethod1@wcTest1@1@QAEXXZ) 中被引用
+E:\vs project\wc\Debug\wcTest1.dll : fatal error LNK1120: 1 个无法解析的外部命令

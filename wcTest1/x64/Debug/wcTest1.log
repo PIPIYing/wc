@@ -1,0 +1,3 @@
+﻿  wcTest1.cpp
+E:\vs project\wc\wcTest1\wcTest1.cpp(35,15): warning C4101: “i”: 未引用的局部变量
+  wcTest1.vcxproj -> E:\vs project\wc\x64\Debug\wcTest1.dll

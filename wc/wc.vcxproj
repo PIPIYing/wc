@@ -149,6 +149,9 @@
   <ItemGroup>
     <ClCompile Include="wc.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="wc.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
