@@ -13,5 +13,7 @@ int countLine(char path[N], char file[N]);
 int countElse(char path[N], char file[N]);
 //递归查找符合条件的文件
 int searchFile(char path[N], char mode[N], int tag);
+//拆分输入的路径
+int splitPath(char path[N], char mode[N]);
 
 #endif

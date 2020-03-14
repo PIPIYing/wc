@@ -31,12 +31,25 @@ namespace wcTest1
 			//递归文件的测试代码
 			char path[N] = { "E:\\vs project\\wcTest\\" };
 			char mode[N] = { "*" };
-			//计数器
-			int n = 0, i;
 			int tag = 0;
 
 			int c5 = searchFile(path, mode, tag);
+			//通过文件夹中的文件个数确定递归函数是否正确递归
 			Assert::AreEqual(c5, 7);
+		};
+
+		TEST_METHOD(TestMethod3)
+		{
+			//拆分路径的测试代码
+			char path1[N] = { "E:\\test\\*.c" };
+			char path2[N] = { "E:\\test" };
+			char mode[N] = { 0 };
+
+			int c6 = splitPath(path1,mode);
+			int c7 = splitPath(path2, mode);
+
+			Assert::AreEqual(c6, 1);
+			Assert::AreEqual(c7, -1);
 		};
 	};
 }

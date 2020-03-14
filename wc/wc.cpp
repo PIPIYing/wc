@@ -29,7 +29,7 @@ int countChar(char path[N], char file[N])
     }
     else {
         //统计字符数（包括字母、数字、英文符号、空格、换行、中文字符）
-        for (i = 0; i < N; i++) {
+        for (i = 0; i < M; i++) {
             c[i] = fgetc(fp);
             if (feof(fp))  break;
             else {
@@ -113,7 +113,7 @@ int countLine(char path[N], char file[N]) {
     return n;
 }
 
-//统计代码行、空行和注释行（可简化该函数）
+//统计代码行、空行和注释行
 int countElse(char path[N], char file[N]) {
     FILE* fp = NULL;
     errno_t err;
@@ -339,42 +339,87 @@ int searchFile(char path[N],char mode[N],int tag) {
     return num;
 }
 
+//拆分输入的路径
+int splitPath(char path[N],char mode[N]) {
+    int i, j, k, len;
+    //1表示到符合输入要求的路径
+    int mark = 0;
+    len = strlen(path);
+
+    for (i = len; i >= 0; i--) {
+        if (path[i] == '\\') {
+            for (j = i; j < len; j++) {
+                //是文件/通配符的标志
+                if (path[j] == '.' || path[j] == '*') {
+                    for (k = 0; i < len; i++, k++) {
+                        mode[k] = path[i + 1];
+                        path[i + 1] = '\0';
+                    }
+                    mark = 1;
+                }
+                if (mark == 1)  break;
+            }
+            if (mark == 1)  break;
+        }
+    }
+    if (mark == 1)  return 1;
+    else  printf("输入文件路径有误，请重新输入!\n例：E:\\test\\file.c\n");
+    return -1;
+}
+
 int main(int argc, char* argv[]) {
-    char path[N] = { "E:\\vs project\\wcTest\\" };
-    char mode[N] = { "*.*" };
-    char file[N] = { "test.c" };
+    //char path[N] = { "E:\\vs project\\wcTest\\" };
+    //char mode[N] = { "*.*" };
+    //char file[N] = { "test.c" };
+    char path[N] = { "E:\\test" };
+    char mode[N] = { 0 };
     //1是-c，2是-w，3是-l，4是-a
     int tag = 0;
 
     //统计
-    if (strcmp(argv[1], "-c") == 0)
-        countChar(path, argv[2]);
-    else if (strcmp(argv[1], "-w") == 0)
-        countWord(path, argv[2]);
-    else if (strcmp(argv[1], "-l") == 0)
-        countLine(path, argv[2]);
-    else if (strcmp(argv[1], "-a") == 0)
-        countElse(path, argv[2]);
+    if (strcmp(argv[1], "-c") == 0) {
+        strcpy_s(path, argv[2]);
+        if (splitPath(path, mode) == 1)  countChar(path, mode);
+    }
+    else if (strcmp(argv[1], "-w") == 0) {
+        strcpy_s(path, argv[2]);
+        if (splitPath(path, mode) == 1)  countWord(path, mode);
+    }
+    else if (strcmp(argv[1], "-l") == 0) {
+        strcpy_s(path, argv[2]);
+        if (splitPath(path, mode) == 1)  countLine(path, mode);
+    }
+    else if (strcmp(argv[1], "-a") == 0) {
+        strcpy_s(path, argv[2]);
+        if (splitPath(path, mode) == 1)  countElse(path, mode);
+    }
     //拓展功能
     else if (strcmp(argv[1], "-s") == 0 && strcmp(argv[2], "-c") == 0) {
         tag = 1;
-        searchFile(path, argv[3], tag);
+        strcpy_s(path, argv[3]);
+        if (splitPath(path, mode) == 1)  searchFile(path, mode, tag);
     }
     else if (strcmp(argv[1], "-s") == 0 && strcmp(argv[2], "-w") == 0) {
         tag = 2;
-        searchFile(path, argv[3], tag);
+        strcpy_s(path, argv[3]);
+        if (splitPath(path, mode) == 1)  searchFile(path, mode, tag);
     }
     else if (strcmp(argv[1], "-s") == 0 && strcmp(argv[2], "-l") == 0) {
         tag = 3;
-        searchFile(path, argv[3], tag);
+        strcpy_s(path, argv[3]);
+        if (splitPath(path, mode) == 1)  searchFile(path, mode, tag);
     }
     else if (strcmp(argv[1], "-s") == 0 && strcmp(argv[2], "-a") == 0) {
         tag = 4;
-        searchFile(path, argv[3], tag);
+        strcpy_s(path, argv[3]);
+        if (splitPath(path, mode) == 1)  searchFile(path, mode, tag);
     }
     //批处理同类型文件
-    else if (strcmp(argv[1], "-s") == 0)
-        searchFile(path, argv[2], tag);
+    else if (strcmp(argv[1], "-s") == 0) {
+        strcpy_s(path, argv[2]);
+        if (splitPath(path, mode) == 1)  searchFile(path, mode, tag);
+    }
+    else printf("指令有误，请重新输入！\n");
 
     system("pause");
 
