@@ -12,7 +12,7 @@ namespace wcTest1
 		TEST_METHOD(TestMethod1)
 		{
 			//统计字符数、单词数、行数、其他行数的测试代码
-			char path[N] = { "E:\\vs project\\wcTest\\" };
+			char path[N] = { "E:\\test\\" };
 			char file[N] = { "file.c" };
 
 			int c1 = countChar(path, file);
@@ -20,10 +20,10 @@ namespace wcTest1
 			int c3 = countLine(path, file);
 			int c4 = countElse(path, file);
 
-			Assert::AreEqual(c1, 49);
+			Assert::AreEqual(c1, 51);
 			Assert::AreEqual(c2, 5);
 			Assert::AreEqual(c3, 10);
-			Assert::AreEqual(c4, 4);
+			Assert::AreEqual(c4, 5);
 		};
 
 		TEST_METHOD(TestMethod2)

@@ -28,7 +28,6 @@ int countChar(char path[N], char file[N])
         return -1;
     }
     else {
-        //统计字符数（包括字母、数字、英文符号、空格、换行、中文字符）
         for (i = 0; i < M; i++) {
             c[i] = fgetc(fp);
             if (feof(fp))  break;
@@ -37,10 +36,12 @@ int countChar(char path[N], char file[N])
                     //每个中文字和中文符号各占2个字符位
                     c[i + 1] = fgetc(fp);
                     i += 2;
+                    //统计中文字
                     nC++;
                 }
                 else if (c[i] < 0)  
                     break;
+                //统计字符数（包括字母、数字、英文符号、空格、换行，不包括中文字符）
                 else  n++;
             }
         }
@@ -74,7 +75,6 @@ int countWord(char path[N], char file[N]) {
     {
         c = fgetc(fp);
         if (feof(fp))  break;
-        //else if(c == ' ' || c == ',' || c == '.' || c == '!' || c == ':' || c == ';' || c == '?')  n++;
         //通过空格来统计单词数
         else if (c == ' ')  n++;
     } while (1);
@@ -156,7 +156,7 @@ int countElse(char path[N], char file[N]) {
                     //在该行查找注释的结束符号
                     for (j = i; j < length; j++) {
                         if (b[j] == '*' && b[j + 1] == '/') {
-                            /* 查找结束符号成功，该行为注释行 */
+                            //查找结束符号成功，该行为注释行
                             //注释行不属于代码行
                             if (count_char > 1)  codeLine--;
                             //注释行不属于空行
@@ -180,10 +180,10 @@ int countElse(char path[N], char file[N]) {
                 if (b[i] == '/' && b[i + 1] == '*' && tag == 0) {
                     countC2++;
                     tag = 1;
-                    /* 第二种注释情况，读入的一行为注释行，同行查找结束符号 */
+                    //第二种注释情况，读入的一行为注释行，同行查找结束符号
                     for (j = i + 2; j < length - 2; j++) {
                         if (b[j] == '*' && b[j + 1] == '/') {
-                            /* 查找结束符号成功，该行为注释行 */
+                            //查找结束符号成功，该行为注释行
                             countC2++;
                             //注释行不属于代码行
                             if (count_char > 1)  codeLine--;
@@ -220,7 +220,7 @@ int countElse(char path[N], char file[N]) {
     printf("空白行：%d\t", blankLine);
     printf("注释行：%d\n", commentLine);
 
-    //返回注释行
+    //返回注释行，作为单元测试的内容
     return commentLine;
 }
 
@@ -232,7 +232,7 @@ int searchFile(char path[N],char mode[N],int tag) {
     //文件结构体
     struct _finddata_t fileInfo1;
     struct _finddata_t fileInfo2;
-    //.c文件查找路径、所有文件的查找路径、递归路径
+    //特定文件查找路径、所有文件的查找路径、递归路径
     char nowPath_file[N] = { 0 };
     char nowPath_folder[N] = { 0 };
     char nowPath_re[N] = { 0 };
@@ -246,7 +246,7 @@ int searchFile(char path[N],char mode[N],int tag) {
     strcpy_s(nowPath_file, path);
     strcpy_s(nowPath_folder, path);
     strcpy_s(nowPath_re, path);
-    //拼接.c文件和所有文件的查找路径
+    //拼接特定文件和所有文件的查找路径
     strcat_s(nowPath_file, mode);
     strcat_s(nowPath_folder, mode_N);
 
@@ -256,7 +256,7 @@ int searchFile(char path[N],char mode[N],int tag) {
     Handle2 = _findfirst(nowPath_file, &fileInfo2);
 
     if ((Handle2 = _findfirst(nowPath_file, &fileInfo2)) == -1L)
-        printf("该目录中没有找到这种类型的文件。\n");
+        printf("该目录中没有这种类型的文件。\n");
     else {
         //查找文件后缀名.
         for (i = 0; i < strlen(fileInfo2.name); i++) {
@@ -265,11 +265,12 @@ int searchFile(char path[N],char mode[N],int tag) {
                 break;
             }
         }
-        //不打印文件夹名
+        //只打印文件名，不打印文件夹名
         if (mark == 1 && strcmp(fileInfo2.name, ".") != 0 && strcmp(fileInfo2.name, "..") != 0) {
             printf("文件名：%s\n", fileInfo2.name);
+            //单元测试的参数
             num = num + 1;
-            //处理文件的相关内容
+            //实现指令的功能
             if (tag == 1) {
                 countChar(nowPath_re, fileInfo2.name);
             }
@@ -290,15 +291,17 @@ int searchFile(char path[N],char mode[N],int tag) {
             //查找文件后缀名.
             for (i = 0; i < strlen(fileInfo2.name); i++) {
                 if (fileInfo2.name[i] == '.') {
+                    //标记文件夹
                     mark = 1;
                     break;
                 }
             }
-            //不打印文件夹名
+            //只打印文件名，不打印文件夹名
             if (mark == 1 && strcmp(fileInfo2.name, ".") != 0 && strcmp(fileInfo2.name, "..") != 0) {
                 printf("文件名：%s\n", fileInfo2.name);
+                //单元测试参数
                 num = num + 1;
-                //处理文件的相关内容
+                //实现指令的功能
                 if (tag == 1) {
                     countChar(nowPath_re, fileInfo2.name);
                 }
@@ -330,16 +333,19 @@ int searchFile(char path[N],char mode[N],int tag) {
                     //拼接子目录的路径，进行递归查找
                     strcat_s(nowPath_re, fileInfo1.name);
                     strcat_s(nowPath_re, "\\");
+                    //单元测试参数
                     num += searchFile(nowPath_re, mode, tag);
                 }
             }
-        } while (_findnext(Handle1, &fileInfo1) == 0);  //循环该目录中所有文件
+          //循环该目录中所有文件
+        } while (_findnext(Handle1, &fileInfo1) == 0);  
         _findclose(Handle1);
     }    
+    //返回单元测试参数
     return num;
 }
 
-//拆分输入的路径
+//拆分在cmd下输入的完整路径
 int splitPath(char path[N],char mode[N]) {
     int i, j, k, len;
     //1表示到符合输入要求的路径
@@ -367,6 +373,7 @@ int splitPath(char path[N],char mode[N]) {
     return -1;
 }
 
+//主函数
 int main(int argc, char* argv[]) {
     //char path[N] = { "E:\\vs project\\wcTest\\" };
     //char mode[N] = { "*.*" };
